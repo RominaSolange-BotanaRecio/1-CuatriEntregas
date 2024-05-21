@@ -1,0 +1,17 @@
+PSEUDOCÓDIGO (EJERCICIO -PAR/IMPAR)
+
+Escribir "chequear un número"
+Si el número == 0
+ Escribir "que el número es 0".
+Sino si el número % == 0 
+ Escribir "que el número es par"
+O
+ Escribir "que el número es impar"
+
+
+PRUEBA DE ESCRITORIO
+
+7 --> 7 es impar
+4 --> 4 es par
+0 --> 0 es 0
+
