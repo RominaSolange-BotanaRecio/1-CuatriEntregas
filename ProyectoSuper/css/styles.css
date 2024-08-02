@@ -1,0 +1,255 @@
+
+.container {
+  max-width: 1200px; 
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Estilos generales */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #c2e6e0;
+  margin: 0;
+  padding: 0;
+}
+
+/* Elementos navegacion */
+header {
+  background-color: rgb(204, 35, 120); /* Fucsia */
+  padding: 25px;
+  display: flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+header nav ul {
+  list-style-type: none;
+  padding: 0;
+  display:flex;
+  justify-content:right;
+  margin: 15px;
+}
+
+/* Elementos navegacion barra */
+header nav ul li a {
+  text-decoration:none;
+  color: rgb(204, 199, 140);
+  font-weight: bold;
+  font-size: 25px;
+  margin: 40px;
+}
+
+/* Estilos logo */
+header img {
+  width: 140px;
+  height: 140px;
+  position:initial;
+  top: 50px;
+  left: 50px;
+  border-radius:10px;
+}
+
+main {
+  padding: 20px;
+}
+
+footer {
+  background-color: #db4f95; /* Fucsia */
+  text-align: center;
+  padding: 60px;
+  color: rgb(216, 219, 9);
+}
+
+/* Home */
+.bienvenida {
+ background-color: rgb(222, 240, 122);
+ padding: 20px;
+ border-radius: 10px;
+ box-shadow: 4px 8px #ff69b4;
+}
+
+.bienvenida img {
+  max-width: 30%;
+  height: auto;
+  border-radius:10px;
+}
+
+.bienvenida-texto p {
+  font-size: 20px;
+  line-height: 25px;
+  color: #c0046c;
+  text-align: left;
+  text-align: justify;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  
+}
+
+.bienvenida-texto h1 {
+  font-size: 30px;
+  margin-bottom: 10px;
+  align-items: center;
+  line-height: 20px;
+  color: deeppink;
+}
+
+.bienvenida-contenido {
+  display: flex;
+  align-items:end;
+  gap: 20px;
+}
+
+/* Carrusel productos ofertas*/
+
+/* Carrusel texto bajo imagen*/
+.productos-ofertaa {
+  background-color: #d0fa82;
+  box-shadow: #ff69b4;
+  text-align: center;
+  border-radius:10px;
+}
+
+/* Carrusel titulo ofertas*/
+.productos-ofertaa h2 {
+  text-align: center;
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-weight: bold;
+  background-color: #c0046c;
+}
+
+.carrusel {
+  justify-content: center;
+  display:flex;
+  gap: 40px;
+}
+
+.oferta img  {
+  width: 280px;
+  height: auto;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+/* Historia */
+.historia h2 {
+  text-align: center;
+  margin-bottom: 45px;
+  background-color: #d0fa82;
+}
+
+.historia-contenido {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  align-items: flex;
+  margin-bottom: 40px;
+  border-radius:10px;
+ 
+}
+
+.historia-imagenes {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+}
+
+.historia-texto {
+  font-family:Arial, Helvetica, sans-serif;
+  text-align:justify;
+  font-size: 18px;
+  background-color: #d0fa82;
+  border-radius: 10px;
+  line-height: normal;
+  margin: 20px;
+}
+
+/* Productos */
+.producto {
+  width: 20px;
+  text-align: center;
+}
+
+.producto p {
+  margin: 0;
+  font-size: 20px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #9ab403;
+}
+
+.productos-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  font-size: 15px;
+ 
+}
+
+.producto {
+  border: 2px solid #9ab403; /* color */
+  padding: 10px;
+  margin: 10px;
+  text-align: center;
+  width: 250px; /* tamaño de los productos */
+  box-sizing: border-box;
+  
+}
+
+.producto img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+#calcular-total {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  background-color: #ff69b4; /* Fucsia */
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
+.boton-compra:active {
+  background-color: #9ab403;
+ 
+}
+#total-compra {
+  text-align: center;
+  font-size: 1.5em;
+  margin-top: 20px;
+}
+/* Contacto */
+/* Contenedor */
+form {
+  display: flex;
+  flex-direction: column;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #9ab403;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 4px 8px #c5cf31;
+}
+ form
+form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+form input, form textarea {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #c5cf31;
+  border-radius: 10px;
+}
+
+form button {
+  padding: 15px 25px;
+  background-color: #ff69b4; /* Fucsia */
+  color: white;
+  border: none;
+  cursor: pointer;
+}
