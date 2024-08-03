@@ -31,51 +31,114 @@ function cargarProductos() {
         { id: 12, nombre: "Harina Pureza Leudante, 1kg", precio: 650, stock: 2, imagen: "imagenes/Harina.jpg" },
     ];
 
-    let container = document.querySelector(".productos-container");
+    // Referencia a elementos del DOM
+    let container = document.querySelector('.productos-container');
+    let totalCompraElem = document.getElementById('total-compra');
+    let calcularTotalBtn = document.getElementById('calcular-total');
 
-    productos.forEach(producto => {
-        let div = document.createElement("div");
-        div.classList.add("producto");
-        div.innerHTML = `
-            <img src="${producto.imagen}" alt="${producto.nombre}">
-            <h3>${producto.nombre}</h3>
-            <p>Precio: $${producto.precio}</p>
-            <p>Stock: ${producto.stock}</p>
-            <input type="number" class="cantidad" min="1" max="${producto.stock}" value="0">
-            <button class="btn-comprar">Comprar</button>
-        `;
-        container.appendChild(div);
+    // Función para renderizar los productos
+    function renderProductos() {
+        container.innerHTML = '';
+        productos.forEach(producto => {
+            // Crear elementos para cada producto
+            let productoDiv = document.createElement('div');
+            productoDiv.className = 'producto';
+            
+            let imagen = document.createElement('img');
+            imagen.src = producto.imagen;
+            imagen.alt = producto.nombre;
 
-        let cantidadInput = div.querySelector(".cantidad");
-        div.querySelector(".btn-comprar").addEventListener("click", function () {
-            agregarAlCarrito(producto.id, producto.precio, cantidadInput.value);
+            let nombre = document.createElement('h3');
+            nombre.textContent = producto.nombre;
+
+            let precio = document.createElement('p');
+            precio.textContent = `Precio: $${producto.precio.toFixed(2)}`;
+
+            let stock = document.createElement('p');
+            stock.textContent = `Stock: ${producto.stock}`;
+
+            let cantidadInput = document.createElement('input');
+            cantidadInput.type = 'number';
+            cantidadInput.min = 0;
+            cantidadInput.max = producto.stock;
+            cantidadInput.value = 0;
+            cantidadInput.dataset.id = producto.id;
+            cantidadInput.className = 'cantidad-input';
+
+            let botonCompra = document.createElement('button');
+            botonCompra.textContent = 'Comprar';
+            botonCompra.dataset.id = producto.id;
+            botonCompra.className = 'boton-compra';
+            botonCompra.addEventListener('click', function() {
+                handleCompra(producto.id, cantidadInput.value);
+            });
+
+            productoDiv.appendChild(imagen);
+            productoDiv.appendChild(nombre);
+            productoDiv.appendChild(precio);
+            productoDiv.appendChild(stock);
+            productoDiv.appendChild(cantidadInput);
+            productoDiv.appendChild(botonCompra);
+
+            container.appendChild(productoDiv);
         });
-    });
-}
+    }
 
-function agregarAlCarrito(id, precio, cantidad) {
-    let total = sessionStorage.getItem("total") ? parseFloat(sessionStorage.getItem("total")) : 0;
-    let nuevoTotal = total + (precio * cantidad);
-    sessionStorage.setItem("total", nuevoTotal);
-    console.log(`Producto ${id} agregado al carrito. Cantidad: ${cantidad}. Total: $${nuevoTotal}`);
-}
+    // Maneja la compra de un producto
+    function handleCompra(id, cantidad) {
+        let producto = productos.find(p => p.id === parseInt(id));
+        if (producto) {
+            producto.stock -= parseInt(cantidad);
+            if (producto.stock < 0) {
+                producto.stock = 0;
+                alert('No hay suficiente stock.');
+            }
+            renderProductos(); // Actualizar la vista de productos
+        }
+    }
 
-function calcularTotal() {
-    let total = sessionStorage.getItem("total") ? parseFloat(sessionStorage.getItem("total")) : 0;
-    let totalContainer = document.getElementById("total-container");
-    totalContainer.innerHTML = `El total de tu compra es $${total}`;
-}
+    // Calcula el total de la compra
+    function calcularTotal() {
+        let total = 0;
+        document.querySelectorAll('.cantidad-input').forEach(input => {
+            let id = input.dataset.id;
+            let cantidad = parseInt(input.value);
+            let producto = productos.find(p => p.id === parseInt(id));
+            if (producto) {
+                total += producto.precio * cantidad;
+            }
+        });
+        totalCompraElem.textContent = `Total: $${total.toFixed(2)}`;
+    }
+
+    // Inicializar
+    renderProductos();
+    calcularTotalBtn.addEventListener('click', calcularTotal);
+};
 
 function enviarFormulario() {
-    let nombre = document.getElementById("nombre").value;
-    let apellido = document.getElementById("apellido").value;
-    let email = document.getElementById("email").value;
-    let telefono = document.getElementById("telefono").value;
-    let mensaje = document.getElementById("mensaje").value;
+    let nombre = document.getElementById('nombre').value;
+    let apellido = document.getElementById('apellido').value;
+    let email = document.getElementById('email').value;
+    let telefono = document.getElementById('telefono').value;
+    let mensaje = document.getElementById('mensaje').value;
 
-    let datos = `Nombre: ${nombre}\nApellido: ${apellido}\nEmail: ${email}\nTeléfono: ${telefono}\nMensaje: ${mensaje}`;
+    let datosFormulario = "Nombre: " + nombre + "\nApellido: " + apellido + "\nEmail: " + email + "\nTeléfono: " + telefono + "\nMensaje: " + mensaje + "\n\n";
 
-    // Aquí se debería enviar el formulario a un archivo txt o al servidor.
-    console.log(datos);
-    alert("Formulario enviado correctamente.");
+    // Crear un enlace para descargar el archivo
+    let enlace = document.createElement('a');
+    enlace.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(datosFormulario);
+    enlace.download = 'contacto.txt';
+    enlace.textContent = 'Descargar formulario';
+    document.body.appendChild(enlace);
+
+    // Simular un clic en el enlace para iniciar la descarga
+    enlace.click();
+
+    // Eliminar el enlace después de la descarga
+    document.body.removeChild(enlace);
+
+    // Mostrar los datos en la consola
+    console.log('Formulario enviado:');
+    console.log(datosFormulario);
 }
