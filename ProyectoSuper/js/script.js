@@ -142,3 +142,18 @@ function enviarFormulario() {
     console.log('Formulario enviado:');
     console.log(datosFormulario);
 }
+
+// contenedor con clase "carrusel"
+const carruselContainer = document.querySelector('.carrusel');
+const carruselItems = carruselContainer.querySelectorAll('.oferta'); // Los elementos del carrusel
+
+let currentIndex = 0; // Índice actual del elemento visible
+
+function mostrarSiguiente() {
+    carruselItems[currentIndex].classList.remove('visible'); // Oculta el elemento actual
+    currentIndex = (currentIndex + 1) % carruselItems.length; // Calcula el siguiente índice
+    carruselItems[currentIndex].classList.add('visible'); // Muestra el siguiente elemento
+}
+
+// Configura un intervalo para cambiar automáticamente los elementos cada 3 segundos
+setInterval(mostrarSiguiente, 1000);
