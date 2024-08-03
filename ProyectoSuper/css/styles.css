@@ -6,7 +6,7 @@
 
 /* Estilos generales */
 body {
-  font-family: Arial, sans-serif;
+  font-family: sans-serif;
   background-color: #c2e6e0;
   margin: 0;
   padding: 0;
@@ -33,8 +33,7 @@ header nav ul {
 header nav ul li a {
   text-decoration:none;
   color: rgb(204, 199, 140);
-  font-weight: bold;
-  font-size: 25px;
+  font-size: 20px;
   margin: 40px;
 }
 
@@ -55,6 +54,7 @@ main {
 footer {
   background-color: #db4f95; /* Fucsia */
   text-align: center;
+  font-family: sans-serif;
   padding: 60px;
   color: rgb(216, 219, 9);
 }
@@ -150,17 +150,19 @@ footer {
 
 /* Historia */
 .historia h2 {
+  font-family:sans-serif;
   text-align: center;
-  margin-bottom: 45px;
+  margin-bottom: 40px;
   background-color: #d0fa82;
 }
 
+/* ajuste recuadro */
 .historia-contenido {
   display: flex;
-  gap: 30px;
+  gap: 10px;
   justify-content: center;
   align-items: flex;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
   border-radius:10px;
  
 }
@@ -169,16 +171,17 @@ footer {
   display: flex;
   flex-direction: column;
   max-width: 600px;
+  border-radius: 20px;
 }
 
 .historia-texto {
-  font-family:Arial, Helvetica, sans-serif;
+  font-family:sans-serif;
   text-align:justify;
-  font-size: 18px;
+  font-size: 20px;
   background-color: #d0fa82;
   border-radius: 10px;
   line-height: normal;
-  margin: 20px;
+  padding: 15px;
 }
 
 /* Productos */
@@ -190,16 +193,16 @@ footer {
 .producto p {
   margin: 0;
   font-size: 20px;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-family:sans-serif;
   color: #9ab403;
 }
 
 .productos-container {
-  display: flex;
-  flex-wrap: wrap;
+  display:flex;
+  flex-wrap:wrap;
   justify-content: space-around;
   font-size: 15px;
- 
+  align-items: center;
 }
 
 .producto {
@@ -208,8 +211,7 @@ footer {
   margin: 10px;
   text-align: center;
   width: 250px; /* tamaño de los productos */
-  box-sizing: border-box;
-  
+  box-sizing: border-box;  
 }
 
 .producto img {
@@ -227,14 +229,14 @@ footer {
   border: none;
   cursor: pointer;
   font-size: 15px;
-  border-radius: 10px;
+  border-radius: 15px;
 }
 
 .boton-compra:active {
   background-color: #9ab403;
- 
+  border-radius: 10px;
 }
-#total-compra {
+total-compra {
   text-align: center;
   font-size: 1.5em;
   margin-top: 20px;
@@ -270,4 +272,16 @@ form button {
   color: white;
   border: none;
   cursor: pointer;
+}
+/* titulo form */
+h2 {
+  font-family: sans-serif;
+  font-size: 30px;
+  text-align:center;
+}
+/* direccion */
+p {
+  font-family: sans-serif;
+  font-size: 20px;
+  text-align:center;
 }
