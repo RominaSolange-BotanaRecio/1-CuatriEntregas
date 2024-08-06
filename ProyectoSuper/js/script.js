@@ -32,44 +32,44 @@ function cargarProductos() {
     ];
 
     // Referencia a elementos del DOM
-    let container = document.querySelector('.productos-container');
-    let totalCompraElem = document.getElementById('total-compra');
-    let calcularTotalBtn = document.getElementById('calcular-total');
+    let container = document.querySelector(".productos-container");
+    let totalCompraElem = document.getElementById("total-compra");
+    let calcularTotalBtn = document.getElementById("calcular-total");
 
     // Función para renderizar los productos
     function renderProductos() {
-        container.innerHTML = '';
+        container.innerHTML = "";
         productos.forEach(producto => {
             // Crear elementos para cada producto
-            let productoDiv = document.createElement('div');
-            productoDiv.className = 'producto';
+            let productoDiv = document.createElement("div");
+            productoDiv.className = "producto";
             
-            let imagen = document.createElement('img');
+            let imagen = document.createElement("img");
             imagen.src = producto.imagen;
             imagen.alt = producto.nombre;
 
-            let nombre = document.createElement('h3');
+            let nombre = document.createElement("h3");
             nombre.textContent = producto.nombre;
 
-            let precio = document.createElement('p');
+            let precio = document.createElement("p");
             precio.textContent = `Precio: $${producto.precio.toFixed(2)}`;
 
-            let stock = document.createElement('p');
+            let stock = document.createElement("p");
             stock.textContent = `Stock: ${producto.stock}`;
 
-            let cantidadInput = document.createElement('input');
-            cantidadInput.type = 'number';
+            let cantidadInput = document.createElement("input");
+            cantidadInput.type = "number";
             cantidadInput.min = 0;
             cantidadInput.max = producto.stock;
             cantidadInput.value = 0;
             cantidadInput.dataset.id = producto.id;
-            cantidadInput.className = 'cantidad-input';
+            cantidadInput.className = "cantidad-input";
 
-            let botonCompra = document.createElement('button');
-            botonCompra.textContent = 'Comprar';
+            let botonCompra = document.createElement("button");
+            botonCompra.textContent = "Comprar";
             botonCompra.dataset.id = producto.id;
-            botonCompra.className = 'boton-compra';
-            botonCompra.addEventListener('click', function() {
+            botonCompra.className = "boton-compra";
+            botonCompra.addEventListener("click", function() {
                 handleCompra(producto.id, cantidadInput.value);
             });
 
@@ -91,7 +91,7 @@ function cargarProductos() {
             producto.stock -= parseInt(cantidad);
             if (producto.stock < 0) {
                 producto.stock = 0;
-                alert('No hay suficiente stock.');
+                alert("No hay suficiente stock.");
             }
             renderProductos(); // Actualizar la vista de productos
         }
@@ -100,7 +100,7 @@ function cargarProductos() {
     // Calcula el total de la compra
     function calcularTotal() {
         let total = 0;
-        document.querySelectorAll('.cantidad-input').forEach(input => {
+        document.querySelectorAll(".cantidad-input").forEach(input => {
             let id = input.dataset.id;
             let cantidad = parseInt(input.value);
             let producto = productos.find(p => p.id === parseInt(id));
@@ -113,23 +113,23 @@ function cargarProductos() {
 
     // Inicializar
     renderProductos();
-    calcularTotalBtn.addEventListener('click', calcularTotal);
+    calcularTotalBtn.addEventListener("click", calcularTotal);
 };
 
 function enviarFormulario() {
-    let nombre = document.getElementById('nombre').value;
-    let apellido = document.getElementById('apellido').value;
-    let email = document.getElementById('email').value;
-    let telefono = document.getElementById('telefono').value;
-    let mensaje = document.getElementById('mensaje').value;
+    let nombre = document.getElementById("nombre").value;
+    let apellido = document.getElementById("apellido").value;
+    let email = document.getElementById("email").value;
+    let telefono = document.getElementById("telefono").value;
+    let mensaje = document.getElementById("mensaje").value;
 
     let datosFormulario = "Nombre: " + nombre + "\nApellido: " + apellido + "\nEmail: " + email + "\nTeléfono: " + telefono + "\nMensaje: " + mensaje + "\n\n";
 
     // Crear un enlace para descargar el archivo
-    let enlace = document.createElement('a');
-    enlace.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(datosFormulario);
-    enlace.download = 'contacto.txt';
-    enlace.textContent = 'Descargar formulario';
+    let enlace = document.createElement("a");
+    enlace.href = "data:text/plain;charset=utf-8," + encodeURIComponent(datosFormulario);
+    enlace.download = "contacto.txt";
+    enlace.textContent = "Descargar formulario";
     document.body.appendChild(enlace);
 
     // Simular un clic en el enlace para iniciar la descarga
@@ -139,21 +139,21 @@ function enviarFormulario() {
     document.body.removeChild(enlace);
 
     // Mostrar los datos en la consola
-    console.log('Formulario enviado:');
+    console.log("Formulario enviado:");
     console.log(datosFormulario);
 }
 
 // contenedor con clase "carrusel"
-const carruselContainer = document.querySelector('.carrusel');
-const carruselItems = carruselContainer.querySelectorAll('.oferta'); // Los elementos del carrusel
+const carruselContainer = document.querySelector(".carrusel");
+const carruselItems = carruselContainer.querySelectorAll(".oferta"); // Los elementos del carrusel
 
 let currentIndex = 0; // Índice actual del elemento visible
 
 function mostrarSiguiente() {
-    carruselItems[currentIndex].classList.remove('visible'); // Oculta el elemento actual
+    carruselItems[currentIndex].classList.remove("visible"); // Oculta el elemento actual
     currentIndex = (currentIndex + 1) % carruselItems.length; // Calcula el siguiente índice
-    carruselItems[currentIndex].classList.add('visible'); // Muestra el siguiente elemento
+    carruselItems[currentIndex].classList.add("visible"); // Muestra el siguiente elemento
 }
 
 // Configura un intervalo para cambiar automáticamente los elementos cada 3 segundos
-setInterval(mostrarSiguiente, 1000);
+setInterval(mostrarSiguiente, 3000);
