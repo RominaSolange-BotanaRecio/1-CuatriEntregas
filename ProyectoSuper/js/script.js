@@ -31,79 +31,67 @@ function cargarProductos() {
         { id: 12, nombre: "Harina Pureza Leudante, 1kg", precio: 650, stock: 2, imagen: "imagenes/Harina.jpg" },
     ];
 
-    // Referencia a elementos del DOM
     let container = document.querySelector(".productos-container");
     let totalCompraElem = document.getElementById("total-compra");
     let calcularTotalBtn = document.getElementById("calcular-total");
 
-    // Función para renderizar los productos
-    function renderProductos() {
+    let botonesCompra = {};
+
+    function mostrarProductos() {
         container.innerHTML = "";
         productos.forEach(producto => {
-            // Crear elementos para cada producto
-            let productoDiv = document.createElement("div");
-            productoDiv.className = "producto";
-            
-            let imagen = document.createElement("img");
-            imagen.src = producto.imagen;
-            imagen.alt = producto.nombre;
+            let productoDiv = `
+                <div class="producto" id="producto-${producto.id}">
+                    <img src="${producto.imagen}" alt="${producto.nombre}">
+                    <h3>${producto.nombre}</h3>
+                    <p>Precio: $${producto.precio.toFixed(2)}</p>
+                    <p>Stock: ${producto.stock}</p>
+                    <input type="number" min="0" max="${producto.stock}" value="0" class="cantidad-input">
+                    <button class="boton-compra">Comprar</button>
+                </div>
+            `;
+            container.innerHTML += productoDiv;
+        });
 
-            let nombre = document.createElement("h3");
-            nombre.textContent = producto.nombre;
+        document.querySelectorAll(".boton-compra").forEach(boton => {
+            let productoDiv = boton.closest('.producto');
+            let id = parseInt(productoDiv.id.replace('producto-', ''));
+            botonesCompra[id] = boton;
 
-            let precio = document.createElement("p");
-            precio.textContent = `Precio: $${producto.precio.toFixed(2)}`;
-
-            let stock = document.createElement("p");
-            stock.textContent = `Stock: ${producto.stock}`;
-
-            let cantidadInput = document.createElement("input");
-            cantidadInput.type = "number";
-            cantidadInput.min = 0;
-            cantidadInput.max = producto.stock;
-            cantidadInput.value = 0;
-            cantidadInput.dataset.id = producto.id;
-            cantidadInput.className = "cantidad-input";
-
-            let botonCompra = document.createElement("button");
-            botonCompra.textContent = "Comprar";
-            botonCompra.dataset.id = producto.id;
-            botonCompra.className = "boton-compra";
-            botonCompra.addEventListener("click", function() {
-                handleCompra(producto.id, cantidadInput.value);
+            boton.addEventListener("click", function() {
+                let cantidadInput = productoDiv.querySelector(".cantidad-input");
+                procesarCompra(id, cantidadInput.value);
             });
-
-            productoDiv.appendChild(imagen);
-            productoDiv.appendChild(nombre);
-            productoDiv.appendChild(precio);
-            productoDiv.appendChild(stock);
-            productoDiv.appendChild(cantidadInput);
-            productoDiv.appendChild(botonCompra);
-
-            container.appendChild(productoDiv);
         });
     }
 
-    // Maneja la compra de un producto
-    function handleCompra(id, cantidad) {
-        let producto = productos.find(p => p.id === parseInt(id));
-        if (producto) {
-            producto.stock -= parseInt(cantidad);
-            if (producto.stock < 0) {
-                producto.stock = 0;
-                alert("No hay suficiente stock.");
+    function procesarCompra(id, cantidad) {
+        let productoEncontrado = false;
+        for (let i = 0; i < productos.length; i++) {
+            if (productos[i].id === id) {
+                let producto = productos[i];
+                producto.stock -= parseInt(cantidad);
+                if (producto.stock < 0) {
+                    producto.stock = 0;
+                    alert("No hay suficiente stock.");
+                }
+                mostrarProductos(); // Actualizar la vista de productos
+                productoEncontrado = true;
+                break;
             }
-            renderProductos(); // Actualizar la vista de productos
+        }
+        if (!productoEncontrado) {
+            console.error("Producto no encontrado");
         }
     }
 
-    // Calcula el total de la compra
     function calcularTotal() {
         let total = 0;
         document.querySelectorAll(".cantidad-input").forEach(input => {
-            let id = input.dataset.id;
+            let productoDiv = input.closest('.producto');
+            let id = parseInt(productoDiv.id.replace('producto-', ''));
             let cantidad = parseInt(input.value);
-            let producto = productos.find(p => p.id === parseInt(id));
+            let producto = productos.find(p => p.id === id);
             if (producto) {
                 total += producto.precio * cantidad;
             }
@@ -111,10 +99,9 @@ function cargarProductos() {
         totalCompraElem.textContent = `Total: $${total.toFixed(2)}`;
     }
 
-    // Inicializar
-    renderProductos();
+    mostrarProductos();
     calcularTotalBtn.addEventListener("click", calcularTotal);
-};
+}
 
 function enviarFormulario() {
     let nombre = document.getElementById("nombre").value;
@@ -123,37 +110,36 @@ function enviarFormulario() {
     let telefono = document.getElementById("telefono").value;
     let mensaje = document.getElementById("mensaje").value;
 
-    let datosFormulario = "Nombre: " + nombre + "\nApellido: " + apellido + "\nEmail: " + email + "\nTeléfono: " + telefono + "\nMensaje: " + mensaje + "\n\n";
+    if (telefono.length > 15) {
+        alert("El número de teléfono no puede tener más de 15 dígitos.");
+        return;
+    }
 
-    // Crear un enlace para descargar el archivo
+    let datosFormulario = `Nombre: ${nombre}\nApellido: ${apellido}\nEmail: ${email}\nTeléfono: ${telefono}\nMensaje: ${mensaje}\n\n`;
+
     let enlace = document.createElement("a");
     enlace.href = "data:text/plain;charset=utf-8," + encodeURIComponent(datosFormulario);
     enlace.download = "contacto.txt";
     enlace.textContent = "Descargar formulario";
     document.body.appendChild(enlace);
 
-    // Simular un clic en el enlace para iniciar la descarga
     enlace.click();
-
-    // Eliminar el enlace después de la descarga
     document.body.removeChild(enlace);
 
-    // Mostrar los datos en la consola
     console.log("Formulario enviado:");
     console.log(datosFormulario);
 }
 
 // contenedor con clase "carrusel"
 const carruselContainer = document.querySelector(".carrusel");
-const carruselItems = carruselContainer.querySelectorAll(".oferta"); // Los elementos del carrusel
+const carruselItems = carruselContainer.querySelectorAll(".oferta");
 
-let currentIndex = 0; // Índice actual del elemento visible
+let currentIndex = 0;
 
 function mostrarSiguiente() {
-    carruselItems[currentIndex].classList.remove("visible"); // Oculta el elemento actual
-    currentIndex = (currentIndex + 1) % carruselItems.length; // Calcula el siguiente índice
-    carruselItems[currentIndex].classList.add("visible"); // Muestra el siguiente elemento
+    carruselItems[currentIndex].classList.remove("visible");
+    currentIndex = (currentIndex + 1) % carruselItems.length;
+    carruselItems[currentIndex].classList.add("visible");
 }
 
-// Configura un intervalo para cambiar automáticamente los elementos cada 3 segundos
 setInterval(mostrarSiguiente, 3000);
