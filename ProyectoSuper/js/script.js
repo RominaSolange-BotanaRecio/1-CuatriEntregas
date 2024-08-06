@@ -31,44 +31,42 @@ function cargarProductos() {
         { id: 12, nombre: "Harina Pureza Leudante, 1kg", precio: 650, stock: 2, imagen: "imagenes/Harina.jpg" },
     ];
 
+    // Referencia a elementos del DOM
     let container = document.querySelector(".productos-container");
     let totalCompraElem = document.getElementById("total-compra");
     let calcularTotalBtn = document.getElementById("calcular-total");
 
-    let botonesCompra = {};
-
+    // Función para mostrar los productos
     function mostrarProductos() {
         container.innerHTML = "";
         productos.forEach(producto => {
             let productoDiv = `
-                <div class="producto" id="producto-${producto.id}">
+                <div class="producto">
                     <img src="${producto.imagen}" alt="${producto.nombre}">
                     <h3>${producto.nombre}</h3>
                     <p>Precio: $${producto.precio.toFixed(2)}</p>
                     <p>Stock: ${producto.stock}</p>
-                    <input type="number" min="0" max="${producto.stock}" value="0" class="cantidad-input">
-                    <button class="boton-compra">Comprar</button>
+                    <input type="number" min="0" max="${producto.stock}" value="0" class="cantidad-input" data-id="${producto.id}">
+                    <button class="boton-compra" data-id="${producto.id}">Comprar</button>
                 </div>
             `;
             container.innerHTML += productoDiv;
         });
 
         document.querySelectorAll(".boton-compra").forEach(boton => {
-            let productoDiv = boton.closest('.producto');
-            let id = parseInt(productoDiv.id.replace('producto-', ''));
-            botonesCompra[id] = boton;
-
             boton.addEventListener("click", function() {
-                let cantidadInput = productoDiv.querySelector(".cantidad-input");
+                let id = boton.getAttribute("data-id");
+                let cantidadInput = document.querySelector(`.cantidad-input[data-id="${id}"]`);
                 procesarCompra(id, cantidadInput.value);
             });
         });
     }
 
+    // Maneja la compra de un producto
     function procesarCompra(id, cantidad) {
         let productoEncontrado = false;
         for (let i = 0; i < productos.length; i++) {
-            if (productos[i].id === id) {
+            if (productos[i].id === parseInt(id)) {
                 let producto = productos[i];
                 producto.stock -= parseInt(cantidad);
                 if (producto.stock < 0) {
@@ -77,7 +75,8 @@ function cargarProductos() {
                 }
                 mostrarProductos(); // Actualizar la vista de productos
                 productoEncontrado = true;
-                break;
+                // Salir del bucle
+                i = productos.length; // Salir del bucle
             }
         }
         if (!productoEncontrado) {
@@ -85,23 +84,28 @@ function cargarProductos() {
         }
     }
 
+    // Calcula el total de la compra
     function calcularTotal() {
         let total = 0;
         document.querySelectorAll(".cantidad-input").forEach(input => {
-            let productoDiv = input.closest('.producto');
-            let id = parseInt(productoDiv.id.replace('producto-', ''));
+            let id = input.getAttribute("data-id");
             let cantidad = parseInt(input.value);
-            let producto = productos.find(p => p.id === id);
-            if (producto) {
-                total += producto.precio * cantidad;
+            for (let i = 0; i < productos.length; i++) {
+                if (productos[i].id === parseInt(id)) {
+                    let producto = productos[i];
+                    total += producto.precio * cantidad;
+                    // Salir del bucle
+                    i = productos.length; // Salir del bucle
+                }
             }
         });
         totalCompraElem.textContent = `Total: $${total.toFixed(2)}`;
     }
 
+    // Inicializar
     mostrarProductos();
     calcularTotalBtn.addEventListener("click", calcularTotal);
-}
+};
 
 function enviarFormulario() {
     let nombre = document.getElementById("nombre").value;
@@ -110,36 +114,37 @@ function enviarFormulario() {
     let telefono = document.getElementById("telefono").value;
     let mensaje = document.getElementById("mensaje").value;
 
-    if (telefono.length > 15) {
-        alert("El número de teléfono no puede tener más de 15 dígitos.");
-        return;
-    }
+    let datosFormulario = "Nombre: " + nombre + "\nApellido: " + apellido + "\nEmail: " + email + "\nTeléfono: " + telefono + "\nMensaje: " + mensaje + "\n\n";
 
-    let datosFormulario = `Nombre: ${nombre}\nApellido: ${apellido}\nEmail: ${email}\nTeléfono: ${telefono}\nMensaje: ${mensaje}\n\n`;
-
+    // Crear un enlace para descargar el archivo
     let enlace = document.createElement("a");
     enlace.href = "data:text/plain;charset=utf-8," + encodeURIComponent(datosFormulario);
     enlace.download = "contacto.txt";
     enlace.textContent = "Descargar formulario";
     document.body.appendChild(enlace);
 
+    // Simular un clic en el enlace para iniciar la descarga
     enlace.click();
+
+    // Eliminar el enlace después de la descarga
     document.body.removeChild(enlace);
 
+    // Mostrar los datos en la consola
     console.log("Formulario enviado:");
     console.log(datosFormulario);
 }
 
 // contenedor con clase "carrusel"
 const carruselContainer = document.querySelector(".carrusel");
-const carruselItems = carruselContainer.querySelectorAll(".oferta");
+const carruselItems = carruselContainer.querySelectorAll(".oferta"); // Los elementos del carrusel
 
-let currentIndex = 0;
+let currentIndex = 0; // Índice actual del elemento visible
 
 function mostrarSiguiente() {
-    carruselItems[currentIndex].classList.remove("visible");
-    currentIndex = (currentIndex + 1) % carruselItems.length;
-    carruselItems[currentIndex].classList.add("visible");
+    carruselItems[currentIndex].classList.remove("visible"); // Oculta el elemento actual
+    currentIndex = (currentIndex + 1) % carruselItems.length; // Calcula el siguiente índice
+    carruselItems[currentIndex].classList.add("visible"); // Muestra el siguiente elemento
 }
 
+// Configura un intervalo para cambiar automáticamente los elementos cada 3 segundos
 setInterval(mostrarSiguiente, 3000);
